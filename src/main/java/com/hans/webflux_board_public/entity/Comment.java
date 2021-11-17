@@ -1,0 +1,51 @@
+package com.hans.webflux_board_public.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
+
+import java.time.LocalDateTime;
+
+@Table("comments")
+//@Where(clause = "is_deleted=false")
+@Data
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Comment {
+
+    @Id
+    @Column("comment_id")
+    private Long commentId;
+
+    @Column("post_id")
+    private Long postId;
+
+//    @NonNull
+    @Column("contents")
+    private String contents;
+
+    @Column("uid")
+    private Long uid;
+
+    @Column("created_at")
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column("updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column("deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Column("is_deleted")
+    private Boolean isDeleted;
+}
