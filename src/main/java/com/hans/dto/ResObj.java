@@ -32,11 +32,11 @@ public class ResObj<T> {
         this.message = msg;
     }
 
-//    ResponseInfo(int code, String message, T data) {
-//        this.code = code;
-//        this.message = message;
-//        this.data = data;
-//    }
+    ResObj(int code, String message, T data) {
+        this.code = code;
+        this.message = message;
+        this.content = data;
+    }
 
     void setErrCode(ErrCode errCode) {
         this.code = errCode.getCode();
@@ -64,6 +64,10 @@ public class ResObj<T> {
 
     public static <T> Mono<ResObj<T>> failure(int code, String msg) {
         return Mono.just(new ResObj<>(code, msg));
+    }
+
+    public static <T> Mono<ResObj<T>> failure(int code, String msg, T monoData) {
+        return Mono.just(new ResObj<>(code, msg, monoData));
     }
 
     public static <T> Mono<ResObj<T>> failure() {
