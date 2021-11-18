@@ -6,6 +6,7 @@ import com.hans.webflux_board_public.dto.user.*;
 import com.hans.webflux_board_public.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
@@ -21,6 +22,7 @@ import java.util.Objects;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
 
     public Mono<?> findAll() {
         return userRepository.findAll()
@@ -62,7 +64,7 @@ public class UserService {
 
     public Mono<?> signIn(Mono<ReqSignIn> req) {
         return req.flatMap(r -> userRepository.findUserEntityByUserId(r.getUserId())
-                                    .flatMap(u -> (u.getUserPwd().equals(r.getUserPwd()))
+                                    .flatMap(u -> encoder.matches(r.getUserPwd(), u.getUserPwd())
                                                         ? ResObj.success(new ResSignIn(true, u.getUserId(), u.getValid()))
                                                         : ResObj.failure(ErrCode.WRONG_PASSCODE, new ResSignIn(false, u.getUserId(), u.getValid())))
                                     .switchIfEmpty(ResObj.failure(ErrCode.NO_USER)));
@@ -70,7 +72,7 @@ public class UserService {
 
     public Mono<?> signUp(Mono<ReqSignUp> req) {
         return req.flatMap(r -> userRepository.findUserEntityByUserId(r.getUserId())
-                                                .switchIfEmpty(Mono.just(ReqSignUp.mapper(r)))
+                                                .switchIfEmpty(Mono.just(ReqSignUp.mapper(r, encoder)))
                                                 .flatMap(v -> Objects.isNull(v.getUid())
                                                         ? userRepository.save(v).flatMap(ResObj::success)
                                                         : ResObj.failure(ErrCode.EXISTING_USER))
