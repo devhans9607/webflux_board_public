@@ -1,5 +1,6 @@
 package com.hans.webflux_board_public.web;
 
+import com.hans.webflux_board_public.annotation.Test;
 import com.hans.webflux_board_public.dto.user.*;
 import com.hans.webflux_board_public.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/all")
+    @Test
     public Mono<?> findAllUser() {
         return userService.findAll();
     }
