@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import reactor.blockhound.BlockHound;
+import org.springframework.web.reactive.config.EnableWebFlux;
 
 // TODO
 //  - Error handler
@@ -18,7 +18,6 @@ import reactor.blockhound.BlockHound;
 public class WebfluxBoardPublicApplication {
 
     public static void main(String[] args) {
-        BlockHound.install();
         SpringApplication.run(WebfluxBoardPublicApplication.class, args);
     }
 
