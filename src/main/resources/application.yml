@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: board
   r2dbc:
     url: r2dbc:postgresql://localhost:9005/webflux #?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Seoul
     username: hans
@@ -13,4 +15,6 @@ logging:
         data:
           r2dbc: DEBUG
 server:
-  port: 9101
+  port: 8083
+
+#springdoc.api-docs.path : /board
