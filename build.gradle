@@ -41,6 +41,12 @@ dependencyManagement {
     }
 }
 
+bootBuildImage {
+    environment = [
+            "SPRING_ACTIVE_PROFILES" : "k8s"
+    ]
+}
+
 test {
     useJUnitPlatform()
 }
